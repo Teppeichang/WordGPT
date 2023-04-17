@@ -39,28 +39,25 @@ const App = () => {
   const postArticle = async (event) => {
     event.preventDefault();
     try {
-      await axios
-        .post(
-          WP_REST_API_REQUEST_URL,
-          {
-            title: "WP REST APIからの投稿",
-            content: response,
-            status: "draft",
+      await axios.post(
+        WP_REST_API_REQUEST_URL,
+        {
+          title: "WP REST APIからの投稿テストです",
+          content: response,
+          status: "draft",
+        },
+        {
+          headers: {
+            Accept: "*/*",
+            "Content-Type": "application/json",
+            Authorization: `Basic ${process.env.REACT_APP_WP_API_AUTHORIZATION}`,
           },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Basic ${btoa(`wp_test_user:${process.env.REACT_APP_WP_APP_PASSWORD}`)}`
-            },
-          }
-        )
-        .then((res) => {
-          if (res.status === 200) {
-            console.log("投稿に成功しました");
-          }
-        });
+        }
+      );
+      console.log("投稿に成功しました");
     } catch (error) {
-      console.log(`${error}: 投稿に失敗しました`);
+      console.log(error.response);
+      console.log("投稿に失敗しました");
     }
   };
 
