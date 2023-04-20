@@ -3,9 +3,6 @@ import { useState } from "react";
 import { TextField } from "@mui/material";
 
 const App = () => {
-  const OPENAI_API_REQUEST_URL = "https://api.openai.com/v1/chat/completions";
-  const WP_REST_API_REQUEST_URL = "http://localhost:8080/wp-json/wp/v2/posts";
-
   const [mainKeyword, setMainKeyword] = useState("");
   const [subKeyword, setSubKeyword] = useState("");
   const [titleCandidate, setTitleCandidate] = useState("");
@@ -20,7 +17,7 @@ const App = () => {
     event.preventDefault();
     try {
       const titleCandidate = await axios.post(
-        OPENAI_API_REQUEST_URL,
+        process.env.REACT_APP_OPENAI_API_REQUEST_URL,
         {
           model: "gpt-3.5-turbo",
           messages: [
@@ -51,7 +48,7 @@ const App = () => {
     event.preventDefault();
     try {
       const headCandidate = await axios.post(
-        OPENAI_API_REQUEST_URL,
+        process.env.REACT_APP_OPENAI_API_REQUEST_URL,
         {
           model: "gpt-3.5-turbo",
           messages: [
@@ -80,7 +77,7 @@ const App = () => {
     event.preventDefault();
     try {
       const draftArticle = await axios.post(
-        OPENAI_API_REQUEST_URL,
+        process.env.REACT_APP_OPENAI_API_REQUEST_URL,
         {
           model: "gpt-3.5-turbo",
           messages: [
@@ -88,7 +85,8 @@ const App = () => {
               role: "user",
               content: `あなたはプロのブログ記事に特化したライターです。以下の制約条件でブログ記事を作成してください。/n
               # 制約条件/n
-              ・記事はタイトル・見出し・本文の構成にすること/.
+              ・記事はタイトル・見出し・本文の構成にすること/n
+              ・マークダウン形式で文章を出力すること/n
               ・記事のタイトル${title}/n
               ・記事の見出し${headCandidate}
               `,
@@ -112,7 +110,7 @@ const App = () => {
     event.preventDefault();
     try {
       await axios.post(
-        WP_REST_API_REQUEST_URL,
+        process.env.REACT_APP_WP_REST_API_REQUEST_URL,
         {
           title: title,
           content: draftArticle,
@@ -137,7 +135,9 @@ const App = () => {
     <div className="min-h-screen flex flex-col mx-20 ">
       <div className="flex justify-center items-center">
         <p className="my-10 text-center text-3xl font-bold">WordGPT</p>
-        <p className="bg-green-400 text-green-800 font-semibold tracking-wider p-1 ml-1 rounded-lg">BETA</p>
+        <p className="bg-green-400 text-green-800 font-semibold tracking-wider p-1 ml-1 rounded-lg">
+          BETA
+        </p>
       </div>
       <div className="flex flex-col bg-slate-100 rounded-lg p-10 mb-10">
         <form className="flex flex-col justify-center my-5" onSubmit={sendTitlePrompt}>
