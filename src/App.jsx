@@ -1,5 +1,7 @@
 import axios from "axios";
 import Swal from "sweetalert2";
+import nprogress from "nprogress";
+import "nprogress/nprogress.css";
 import { useState } from "react";
 import { TextField, Button } from "@mui/material";
 
@@ -16,7 +18,9 @@ const App = () => {
 
   const sendTitlePrompt = async (event) => {
     event.preventDefault();
+    nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
     try {
+      nprogress.start();
       const titleCandidate = await axios.post(
         process.env.REACT_APP_OPENAI_API_REQUEST_URL,
         {
@@ -40,14 +44,22 @@ const App = () => {
         }
       );
       setTitleCandidate(titleCandidate.data.choices[0].message.content);
+      nprogress.done();
     } catch (error) {
       console.log(error);
+      nprogress.done();
+      Swal.fire({
+        icon: "error",
+        title: "エラーが発生しました。",
+      });
     }
   };
 
   const sendHeadPrompt = async (event) => {
     event.preventDefault();
+    nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
     try {
+      nprogress.start();
       const headCandidate = await axios.post(
         process.env.REACT_APP_OPENAI_API_REQUEST_URL,
         {
@@ -69,14 +81,22 @@ const App = () => {
         }
       );
       setHeadCandidate(headCandidate.data.choices[0].message.content);
+      nprogress.done();
     } catch (error) {
       console.log(error);
+      nprogress.done();
+      Swal.fire({
+        icon: "error",
+        title: "エラーが発生しました。",
+      });
     }
   };
 
   const sendArticlePrompt = async (event) => {
     event.preventDefault();
+    nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
     try {
+      nprogress.start();
       const draftArticle = await axios.post(
         process.env.REACT_APP_OPENAI_API_REQUEST_URL,
         {
@@ -102,14 +122,22 @@ const App = () => {
         }
       );
       setDraftArticle(draftArticle.data.choices[0].message.content);
+      nprogress.done();
     } catch (error) {
       console.log(error);
+      nprogress.done();
+      Swal.fire({
+        icon: "error",
+        title: "エラーが発生しました。",
+      });
     }
   };
 
   const createDraftArticle = async (event) => {
     event.preventDefault();
+    nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
     try {
+      nprogress.start();
       await axios.post(
         process.env.REACT_APP_WP_REST_API_REQUEST_URL,
         {
@@ -125,11 +153,13 @@ const App = () => {
           },
         }
       );
+      nprogress.done();
       Swal.fire({
         icon: "success",
         title: "投稿に成功しました",
       });
     } catch (error) {
+      nprogress.done();
       Swal.fire({
         icon: "error",
         title: "投稿に失敗しました",
@@ -180,7 +210,6 @@ const App = () => {
           className="bg-white"
           sx={{ mb: 10 }}
         />
-
         <form className="flex flex-col justify-center my-5" onSubmit={sendHeadPrompt}>
           <TextField
             label="タイトル"
