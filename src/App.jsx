@@ -1,6 +1,7 @@
 import axios from "axios";
+import Swal from "sweetalert2";
 import { useState } from "react";
-import { TextField } from "@mui/material";
+import { TextField, Button } from "@mui/material";
 
 const App = () => {
   const [mainKeyword, setMainKeyword] = useState("");
@@ -124,10 +125,15 @@ const App = () => {
           },
         }
       );
-      console.log("投稿に成功しました");
+      Swal.fire({
+        icon: "success",
+        title: "投稿に成功しました",
+      });
     } catch (error) {
-      console.log(error.response);
-      console.log("投稿に失敗しました");
+      Swal.fire({
+        icon: "error",
+        title: "投稿に失敗しました",
+      });
     }
   };
 
@@ -152,13 +158,19 @@ const App = () => {
             label="サブキーワード"
             variant="outlined"
             className="bg-white"
-            sx={{ mt: 2 }}
+            sx={{ my: 2 }}
             value={subKeyword}
             onChange={(event) => setSubKeyword(event.target.value)}
           />
-          <button type="submit" className="bg-blue-400 text-white py-2 mt-2 mb-5 rounded-lg w-80">
+          <Button
+            type="submit"
+            variant="contained"
+            disableElevation={true}
+            className="text-white py-2 mb-5 rounded-lg max-w-xs"
+            sx={{ backgroundColor: "#60A5FA" }}
+          >
             タイトル作成
-          </button>
+          </Button>
         </form>
         <TextField
           label="タイトル候補"
@@ -174,12 +186,19 @@ const App = () => {
             label="タイトル"
             variant="outlined"
             className="bg-white"
+            sx={{ mb: 2 }}
             value={title}
             onChange={(event) => setTitle(event.target.value)}
           />
-          <button type="submit" className="bg-blue-400 text-white py-2 mt-2 mb-5 rounded-lg w-80">
+          <Button
+            type="submit"
+            variant="contained"
+            disableElevation={true}
+            className="text-white py-2 mb-5 rounded-lg max-w-xs"
+            sx={{ backgroundColor: "#60A5FA" }}
+          >
             見出し作成
-          </button>
+          </Button>
         </form>
         <TextField
           label="見出し候補"
@@ -202,19 +221,38 @@ const App = () => {
             label="見出し"
             variant="outlined"
             className="bg-white"
-            sx={{ mt: 2 }}
+            sx={{ my: 2 }}
             value={head}
             onChange={(event) => setHead(event.target.value)}
           />
-          <button type="submit" className="bg-blue-400 text-white py-2 mt-2 mb-5 rounded-lg w-80">
+          <Button
+            type="submit"
+            variant="contained"
+            disableElevation={true}
+            className="text-white py-2 mb-5 rounded-lg max-w-xs"
+            sx={{ backgroundColor: "#60A5FA" }}
+          >
             記事作成
-          </button>
+          </Button>
         </form>
         <form className="flex flex-col justify-center" onSubmit={createDraftArticle}>
-          <TextField label="記事" multiline rows={10} value={draftArticle} className="bg-white" />
-          <button type="submit" className="bg-blue-400 text-white py-2 mt-2 mb-10 rounded-lg w-80">
+          <TextField
+            label="記事"
+            multiline
+            rows={10}
+            value={draftArticle}
+            className="bg-white"
+            sx={{ mb: 2 }}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            disableElevation={true}
+            className="text-white py-2 mb-10 rounded-lg max-w-xs"
+            sx={{ backgroundColor: "#60A5FA" }}
+          >
             投稿
-          </button>
+          </Button>
         </form>
       </div>
     </div>
