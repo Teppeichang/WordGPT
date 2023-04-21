@@ -1,7 +1,6 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 import nprogress from "nprogress";
-import "nprogress/nprogress.css";
 import { useState } from "react";
 import { TextField, Button } from "@mui/material";
 
@@ -28,9 +27,10 @@ const App = () => {
           messages: [
             {
               role: "user",
-              content: `あなたはプロのブログ記事に特化したライターです。以下の制約条件と入力文をもとに、箇条書き形式でブログ記事タイトルを出力してください。/n
+              content: `あなたはプロのライターです。以下の制約条件をもとに、SEOに強いブログ記事タイトルを箇条書き形式で出力してください。/n
               #制約条件/n
-              以下のキーワードを必ず使用すること/n
+              32文字以内であること。/n
+              以下のキーワードを必ず使用すること。/n
               ・${mainKeyword}/n
               ・${subKeyword}`,
             },
@@ -67,7 +67,7 @@ const App = () => {
           messages: [
             {
               role: "user",
-              content: `あなたはプロのブログ記事に特化したライターです。以下のタイトルでブログ記事を作成するので、箇条書き形式で記事の見出しを出力してください。/n
+              content: `あなたはプロのライターです。以下のタイトルでブログ記事を作成するので、SEOに強く、タイトルとの親和性が高い見出しを、箇条書き形式で出力してください。/n
               # 記事タイトル/n
               ・${title}`,
             },
@@ -104,7 +104,7 @@ const App = () => {
           messages: [
             {
               role: "user",
-              content: `あなたはプロのブログ記事に特化したライターです。以下の制約条件でブログ記事を作成してください。/n
+              content: `あなたはプロのライターです。以下の制約条件で記事を作成してください。/n
               # 制約条件/n
               ・記事はタイトル・見出し・本文の構成にすること/n
               ・マークダウン形式で文章を出力すること/n
@@ -177,6 +177,7 @@ const App = () => {
       </div>
       <div className="flex flex-col bg-slate-100 rounded-lg p-10 mb-10">
         <form className="flex flex-col justify-center my-5" onSubmit={sendTitlePrompt}>
+          <p className="mb-1">メインキーワードとサブキーワードをもとに記事のタイトルを生成</p>
           <TextField
             label="メインキーワード"
             variant="outlined"
@@ -197,7 +198,7 @@ const App = () => {
             variant="contained"
             disableElevation={true}
             className="text-white py-2 mb-5 rounded-lg max-w-xs"
-            sx={{ backgroundColor: "#60A5FA" }}
+            sx={{ backgroundColor: "#60A5FA", fontWeight: "bold" }}
           >
             タイトル作成
           </Button>
@@ -211,6 +212,7 @@ const App = () => {
           sx={{ mb: 10 }}
         />
         <form className="flex flex-col justify-center my-5" onSubmit={sendHeadPrompt}>
+        <p className="mb-1">記事のタイトルをもとに見出しを生成</p>
           <TextField
             label="タイトル"
             variant="outlined"
@@ -224,7 +226,7 @@ const App = () => {
             variant="contained"
             disableElevation={true}
             className="text-white py-2 mb-5 rounded-lg max-w-xs"
-            sx={{ backgroundColor: "#60A5FA" }}
+            sx={{ backgroundColor: "#60A5FA", fontWeight: "bold" }}
           >
             見出し作成
           </Button>
@@ -239,6 +241,7 @@ const App = () => {
         />
 
         <form className="flex flex-col justify-center my-5" onSubmit={sendArticlePrompt}>
+        <p className="mb-1">記事のタイトル・見出しをもとに記事を生成</p>
           <TextField
             label="タイトル"
             variant="outlined"
@@ -259,7 +262,7 @@ const App = () => {
             variant="contained"
             disableElevation={true}
             className="text-white py-2 mb-5 rounded-lg max-w-xs"
-            sx={{ backgroundColor: "#60A5FA" }}
+            sx={{ backgroundColor: "#60A5FA", fontWeight: "bold" }}
           >
             記事作成
           </Button>
@@ -278,7 +281,7 @@ const App = () => {
             variant="contained"
             disableElevation={true}
             className="text-white py-2 mb-10 rounded-lg max-w-xs"
-            sx={{ backgroundColor: "#60A5FA" }}
+            sx={{ backgroundColor: "#60A5FA", fontWeight: "bold" }}
           >
             投稿
           </Button>
