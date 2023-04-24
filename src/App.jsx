@@ -1,170 +1,39 @@
-import axios from "axios";
-import Swal from "sweetalert2";
-import nprogress from "nprogress";
 import { useState } from "react";
 import { TextField, Button } from "@mui/material";
+import { sendTitlePrompt, sendHeadPrompt, sendArticlePrompt, createArticle } from "./Api";
 
 const App = () => {
   const [mainKeyword, setMainKeyword] = useState("");
   const [subKeyword, setSubKeyword] = useState("");
-  const [titleCandidate, setTitleCandidate] = useState("");
+  const [draftTitle, setDraftTitle] = useState("");
 
   const [title, setTitle] = useState("");
-  const [headCandidate, setHeadCandidate] = useState("");
+  const [draftHead, setDraftHead] = useState("");
 
   const [head, setHead] = useState("");
   const [draftArticle, setDraftArticle] = useState("");
 
-  const sendTitlePrompt = async (event) => {
+  const handleTitlePrompt = async (event) => {
     event.preventDefault();
-    nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
-    try {
-      nprogress.start();
-      const titleCandidate = await axios.post(
-        process.env.REACT_APP_OPENAI_API_REQUEST_URL,
-        {
-          model: "gpt-3.5-turbo",
-          messages: [
-            {
-              role: "user",
-              content: `あなたはプロのライターです。以下の制約条件をもとに、SEOに強いブログ記事タイトルを箇条書き形式で出力してください。/n
-              #制約条件/n
-              32文字以内であること。/n
-              以下のキーワードを必ず使用すること。/n
-              ・${mainKeyword}/n
-              ・${subKeyword}`,
-            },
-          ],
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
-          },
-        }
-      );
-      setTitleCandidate(titleCandidate.data.choices[0].message.content);
-      nprogress.done();
-    } catch (error) {
-      console.log(error);
-      nprogress.done();
-      Swal.fire({
-        icon: "error",
-        title: "エラーが発生しました。",
-      });
-    }
+    const draftTitle = await sendTitlePrompt(mainKeyword, subKeyword);
+    setDraftTitle(draftTitle);
   };
 
-  const sendHeadPrompt = async (event) => {
+  const handleHeadPrompt = async (event) => {
     event.preventDefault();
-    nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
-    try {
-      nprogress.start();
-      const headCandidate = await axios.post(
-        process.env.REACT_APP_OPENAI_API_REQUEST_URL,
-        {
-          model: "gpt-3.5-turbo",
-          messages: [
-            {
-              role: "user",
-              content: `あなたはプロのライターです。以下のタイトルでブログ記事を作成するので、SEOに強く、タイトルとの親和性が高い見出しを、箇条書き形式で出力してください。/n
-              # 記事タイトル/n
-              ・${title}`,
-            },
-          ],
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
-          },
-        }
-      );
-      setHeadCandidate(headCandidate.data.choices[0].message.content);
-      nprogress.done();
-    } catch (error) {
-      console.log(error);
-      nprogress.done();
-      Swal.fire({
-        icon: "error",
-        title: "エラーが発生しました。",
-      });
-    }
+    const draftHead = await sendHeadPrompt(title);
+    setDraftHead(draftHead);
   };
 
-  const sendArticlePrompt = async (event) => {
+  const handleArticlePrompt = async (event) => {
     event.preventDefault();
-    nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
-    try {
-      nprogress.start();
-      const draftArticle = await axios.post(
-        process.env.REACT_APP_OPENAI_API_REQUEST_URL,
-        {
-          model: "gpt-3.5-turbo",
-          messages: [
-            {
-              role: "user",
-              content: `あなたはプロのライターです。以下の制約条件で記事を作成してください。/n
-              # 制約条件/n
-              ・記事はタイトル・見出し・本文の構成にすること/n
-              ・マークダウン形式で文章を出力すること/n
-              ・記事のタイトル${title}/n
-              ・記事の見出し${headCandidate}
-              `,
-            },
-          ],
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
-          },
-        }
-      );
-      setDraftArticle(draftArticle.data.choices[0].message.content);
-      nprogress.done();
-    } catch (error) {
-      console.log(error);
-      nprogress.done();
-      Swal.fire({
-        icon: "error",
-        title: "エラーが発生しました。",
-      });
-    }
+    const draftArticle = await sendArticlePrompt(title, draftHead);
+    setDraftArticle(draftArticle);
   };
 
-  const createDraftArticle = async (event) => {
+  const handleCreateArticle = async (event) => {
     event.preventDefault();
-    nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
-    try {
-      nprogress.start();
-      await axios.post(
-        process.env.REACT_APP_WP_REST_API_REQUEST_URL,
-        {
-          title: title,
-          content: draftArticle,
-          status: "draft",
-        },
-        {
-          headers: {
-            Accept: "*/*",
-            "Content-Type": "application/json",
-            Authorization: `Basic ${process.env.REACT_APP_WP_API_AUTHORIZATION}`,
-          },
-        }
-      );
-      nprogress.done();
-      Swal.fire({
-        icon: "success",
-        title: "投稿に成功しました",
-      });
-    } catch (error) {
-      nprogress.done();
-      Swal.fire({
-        icon: "error",
-        title: "投稿に失敗しました",
-      });
-    }
+    await createArticle(title, draftArticle)
   };
 
   return (
@@ -176,7 +45,7 @@ const App = () => {
         </p>
       </div>
       <div className="flex flex-col bg-slate-100 rounded-lg p-10 mb-10">
-        <form className="flex flex-col justify-center my-5" onSubmit={sendTitlePrompt}>
+        <form className="flex flex-col justify-center my-5" onSubmit={handleTitlePrompt}>
           <p className="mb-1">メインキーワードとサブキーワードをもとに記事のタイトルを生成</p>
           <TextField
             label="メインキーワード"
@@ -207,12 +76,12 @@ const App = () => {
           label="タイトル候補"
           multiline
           rows={10}
-          value={titleCandidate}
+          value={draftTitle}
           className="bg-white"
           sx={{ mb: 10 }}
         />
-        <form className="flex flex-col justify-center my-5" onSubmit={sendHeadPrompt}>
-        <p className="mb-1">記事のタイトルをもとに見出しを生成</p>
+        <form className="flex flex-col justify-center my-5" onSubmit={handleHeadPrompt}>
+          <p className="mb-1">記事のタイトルをもとに見出しを生成</p>
           <TextField
             label="タイトル"
             variant="outlined"
@@ -235,13 +104,13 @@ const App = () => {
           label="見出し候補"
           multiline
           rows={10}
-          value={headCandidate}
+          value={draftHead}
           className="bg-white"
           sx={{ mb: 10 }}
         />
 
-        <form className="flex flex-col justify-center my-5" onSubmit={sendArticlePrompt}>
-        <p className="mb-1">記事のタイトル・見出しをもとに記事を生成</p>
+        <form className="flex flex-col justify-center my-5" onSubmit={handleArticlePrompt}>
+          <p className="mb-1">記事のタイトル・見出しをもとに記事を生成</p>
           <TextField
             label="タイトル"
             variant="outlined"
@@ -267,7 +136,7 @@ const App = () => {
             記事作成
           </Button>
         </form>
-        <form className="flex flex-col justify-center" onSubmit={createDraftArticle}>
+        <form className="flex flex-col justify-center" onSubmit={handleCreateArticle}>
           <TextField
             label="記事"
             multiline
