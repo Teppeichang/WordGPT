@@ -92,8 +92,8 @@ export const sendArticlePrompt = async (title, draftHead) => {
             # 制約条件/n
             ・記事はタイトル・見出し・本文の構成にすること/n
             ・マークダウン形式で文章を出力すること/n
-            ・記事のタイトル${title}/n
-            ・記事の見出し${draftHead}
+            ・記事のタイトルは${title}にすること/n
+            ・記事の見出しは${draftHead}にすること
             `,
           },
         ],
