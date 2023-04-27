@@ -38,6 +38,7 @@ const App = () => {
   };
 
   const copyToClipboard = async (event) => {
+    event.preventDefault();
     try {
       await navigator.clipboard.writeText(draftArticle);
       Swal.fire({
@@ -45,6 +46,7 @@ const App = () => {
         title: "コピーしました",
       })
     } catch(error) {
+      console.log(error)
       Swal.fire({
         icon: "error",
         title: "コピーに失敗しました",
