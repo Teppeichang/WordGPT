@@ -1,4 +1,4 @@
-import Swal from "sweetalert2";
+import CopyButton from "./components/CopyButton";
 import { useState } from "react";
 import { TextField, Button } from "@mui/material";
 import { sendTitlePrompt, sendHeadPrompt, sendArticlePrompt, createArticle } from "./Api";
@@ -36,23 +36,6 @@ const App = () => {
     event.preventDefault();
     await createArticle(title, draftArticle);
   };
-
-  const copyToClipboard = async (event) => {
-    event.preventDefault();
-    try {
-      await navigator.clipboard.writeText(draftArticle);
-      Swal.fire({
-        icon: "success",
-        title: "コピーしました",
-      })
-    } catch(error) {
-      console.log(error)
-      Swal.fire({
-        icon: "error",
-        title: "コピーに失敗しました",
-      });
-    }
-  }
 
   return (
     <div className="min-h-screen flex flex-col mx-20 ">
@@ -173,15 +156,7 @@ const App = () => {
             >
               投稿
             </Button>
-            <Button
-              onClick={copyToClipboard}
-              variant="contained"
-              disableElevation={true}
-              className="text-white py-2 mb-10 rounded-lg w-36"
-              sx={{ backgroundColor: "#60A5FA", fontWeight: "bold", ml: 3 }}
-            >
-              コピー
-            </Button>
+            <CopyButton draftArticle={draftArticle}/>
           </div>
         </form>
       </div>
