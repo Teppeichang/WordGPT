@@ -6,6 +6,7 @@ import { sendTitlePrompt, sendHeadPrompt, sendArticlePrompt, createArticle } fro
 const App = () => {
   const [mainKeyword, setMainKeyword] = useState("");
   const [subKeyword, setSubKeyword] = useState("");
+  const [longTailKeyword, setLongTailKeyword] = useState("");
   const [draftTitle, setDraftTitle] = useState("");
 
   const [title, setTitle] = useState("");
@@ -16,7 +17,7 @@ const App = () => {
 
   const handleTitlePrompt = async (event) => {
     event.preventDefault();
-    const draftTitle = await sendTitlePrompt(mainKeyword, subKeyword);
+    const draftTitle = await sendTitlePrompt(mainKeyword, subKeyword, longTailKeyword);
     setDraftTitle(draftTitle);
   };
 
@@ -47,10 +48,11 @@ const App = () => {
       </div>
       <div className="flex flex-col bg-slate-100 rounded-lg p-10 mb-10">
         <form className="flex flex-col justify-center my-5" onSubmit={handleTitlePrompt}>
-          <p className="mb-1">メインキーワードとサブキーワードをもとに記事のタイトルを生成</p>
+          <p className="mb-1">記事のタイトルを生成</p>
           <TextField
             label="メインキーワード"
             variant="outlined"
+            required
             className="bg-white"
             value={mainKeyword}
             onChange={(event) => setMainKeyword(event.target.value)}
@@ -58,10 +60,19 @@ const App = () => {
           <TextField
             label="サブキーワード"
             variant="outlined"
+            required
             className="bg-white"
             sx={{ my: 2 }}
             value={subKeyword}
             onChange={(event) => setSubKeyword(event.target.value)}
+          />
+          <TextField
+            label="ロングテール"
+            variant="outlined"
+            className="bg-white"
+            sx={{ mb: 2 }}
+            value={longTailKeyword}
+            onChange={(event) => setLongTailKeyword(event.target.value)}
           />
           <Button
             type="submit"
@@ -156,7 +167,7 @@ const App = () => {
             >
               投稿
             </Button>
-            <CopyButton draftArticle={draftArticle}/>
+            <CopyButton draftArticle={draftArticle} />
           </div>
         </form>
       </div>

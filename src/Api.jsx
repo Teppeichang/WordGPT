@@ -2,35 +2,65 @@ import axios from "axios";
 import nprogress from "nprogress";
 import Swal from "sweetalert2";
 
-export const sendTitlePrompt = async (mainKeyword, subKeyword) => {
+export const sendTitlePrompt = async (mainKeyword, subKeyword, longTailKeyword) => {
   nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
   try {
     nprogress.start();
-    const draftTitle = await axios.post(
-      process.env.REACT_APP_OPENAI_API_REQUEST_URL,
-      {
-        model: "gpt-3.5-turbo",
-        messages: [
-          {
-            role: "user",
-            content: `あなたはプロのライターです。以下の制約条件をもとに、SEOに強いブログ記事タイトルを箇条書き形式で出力してください。/n
-            #制約条件/n
-            32文字以内であること。/n
-            以下のキーワードを必ず使用すること。/n
-            ・${mainKeyword}/n
-            ・${subKeyword}`,
-          },
-        ],
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+    if (longTailKeyword === "" || longTailKeyword === null) {
+      const draftTitle = await axios.post(
+        process.env.REACT_APP_OPENAI_API_REQUEST_URL,
+        {
+          model: "gpt-3.5-turbo",
+          messages: [
+            {
+              role: "user",
+              content: `あなたはプロのライターです。以下の制約条件をもとに、SEOに強いブログ記事タイトルを箇条書き形式で出力してください。/n
+              #制約条件/n
+              32文字以内であること。/n
+              以下のキーワードを必ず使用すること。/n
+              ・${mainKeyword}/n
+              ・${subKeyword}`,
+            },
+          ],
         },
-      }
-    );
-    nprogress.done();
-    return draftTitle.data.choices[0].message.content;
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+          },
+        }
+      );
+      nprogress.done();
+      return draftTitle.data.choices[0].message.content;
+    }
+    if (longTailKeyword) {
+      const draftTitle = await axios.post(
+        process.env.REACT_APP_OPENAI_API_REQUEST_URL,
+        {
+          model: "gpt-3.5-turbo",
+          messages: [
+            {
+              role: "user",
+              content: `あなたはプロのライターです。以下の制約条件をもとに、SEOに強いブログ記事タイトルを箇条書き形式で出力してください。/n
+              #制約条件/n
+              32文字以内であること。/n
+              以下のキーワードを必ず使用すること。/n
+              ・${mainKeyword}/n
+              ・${subKeyword}/n
+              ・${longTailKeyword}`,
+            },
+          ],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+          },
+        }
+      );
+      nprogress.done();
+      return draftTitle.data.choices[0].message.content;
+    }
   } catch (error) {
     nprogress.done();
     console.log(error);
