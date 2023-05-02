@@ -2,35 +2,65 @@ import axios from "axios";
 import nprogress from "nprogress";
 import Swal from "sweetalert2";
 
-export const sendTitlePrompt = async (mainKeyword, subKeyword) => {
+export const sendTitlePrompt = async (mainKeyword, subKeyword, longTailKeyword) => {
   nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
   try {
     nprogress.start();
-    const draftTitle = await axios.post(
-      process.env.REACT_APP_OPENAI_API_REQUEST_URL,
-      {
-        model: "gpt-3.5-turbo",
-        messages: [
-          {
-            role: "user",
-            content: `あなたはプロのライターです。以下の制約条件をもとに、SEOに強いブログ記事タイトルを箇条書き形式で出力してください。/n
-            #制約条件/n
-            32文字以内であること。/n
-            以下のキーワードを必ず使用すること。/n
-            ・${mainKeyword}/n
-            ・${subKeyword}`,
-          },
-        ],
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+    if (longTailKeyword === "" || longTailKeyword === null) {
+      const draftTitle = await axios.post(
+        process.env.REACT_APP_OPENAI_API_REQUEST_URL,
+        {
+          model: "gpt-3.5-turbo",
+          messages: [
+            {
+              role: "user",
+              content: `あなたはプロのライターです。以下の制約条件をもとに、SEOに強いブログ記事タイトルを箇条書き形式で出力してください。/n
+              #制約条件/n
+              32文字以内であること。/n
+              以下のキーワードを必ず使用すること。/n
+              ・${mainKeyword}/n
+              ・${subKeyword}`,
+            },
+          ],
         },
-      }
-    );
-    nprogress.done();
-    return draftTitle.data.choices[0].message.content;
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+          },
+        }
+      );
+      nprogress.done();
+      return draftTitle.data.choices[0].message.content;
+    }
+    if (longTailKeyword) {
+      const draftTitle = await axios.post(
+        process.env.REACT_APP_OPENAI_API_REQUEST_URL,
+        {
+          model: "gpt-3.5-turbo",
+          messages: [
+            {
+              role: "user",
+              content: `あなたはプロのライターです。以下の制約条件をもとに、SEOに強いブログ記事タイトルを箇条書き形式で出力してください。/n
+              #制約条件/n
+              32文字以内であること。/n
+              以下のキーワードを必ず使用すること。/n
+              ・${mainKeyword}/n
+              ・${subKeyword}/n
+              ・${longTailKeyword}`,
+            },
+          ],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+          },
+        }
+      );
+      nprogress.done();
+      return draftTitle.data.choices[0].message.content;
+    }
   } catch (error) {
     nprogress.done();
     console.log(error);
@@ -41,7 +71,7 @@ export const sendTitlePrompt = async (mainKeyword, subKeyword) => {
   }
 };
 
-export const sendHeadPrompt = async (title) => {
+export const sendLeadPrompt = async(title) => {
   nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
   try {
     nprogress.start();
@@ -52,7 +82,7 @@ export const sendHeadPrompt = async (title) => {
         messages: [
           {
             role: "user",
-            content: `あなたはプロのライターです。以下のタイトルでブログ記事を作成するので、SEOに強く、タイトルとの親和性が高い見出しを、箇条書き形式で出力してください。/n
+            content: `あなたはプロのライターです。以下のタイトルでブログ記事を作成するので、SEOに強く、タイトルとの親和性が高い導入文を出力してください。/n
             # 記事タイトル/n
             ・${title}`,
           },
@@ -75,9 +105,47 @@ export const sendHeadPrompt = async (title) => {
       title: "エラーが発生しました。",
     });
   }
+}
+
+export const sendHeadPrompt = async (title, lead) => {
+  nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
+  try {
+    nprogress.start();
+    const draftHead = await axios.post(
+      process.env.REACT_APP_OPENAI_API_REQUEST_URL,
+      {
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "user",
+            content: `あなたはプロのライターです。以下のタイトルと導入文を使用したブログ記事を作成するので、SEOに強く、タイトルとの親和性が高い見出しを、箇条書き形式で出力してください。/n
+            # 記事タイトル/n
+            ・${title}/n
+            # 導入文/n
+            ・${lead}/n`,
+          },
+        ],
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+        },
+      }
+    );
+    nprogress.done();
+    return draftHead.data.choices[0].message.content;
+  } catch (error) {
+    nprogress.done();
+    console.log(error);
+    Swal.fire({
+      icon: "error",
+      title: "エラーが発生しました。",
+    });
+  }
 };
 
-export const sendArticlePrompt = async (title, draftHead) => {
+export const sendArticlePrompt = async (title, lead, head) => {
   nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
   try {
     nprogress.start();
@@ -90,11 +158,13 @@ export const sendArticlePrompt = async (title, draftHead) => {
             role: "user",
             content: `あなたはプロのライターです。以下の制約条件に従い、SEOに強い記事を作成してください。/n
             # 制約条件/n
-            ・記事はタイトル・見出し・本文の構成にすること/n
+            ・記事はタイトル・導入文・見出し・本文の構成にすること/n
             ・マークダウン形式で文章を出力すること/n
             ・記事のタイトルは${title}にすること/n
-            ・記事の見出しは${draftHead}にすること/n
-            ・記事は最低でも4000文字以上で、6000文字以内に抑えること
+            ・記事の導入文は${lead}にすること/n
+            ・記事の見出しは${head}にすること/n
+            ・記事の最低文字数は4000文字/n
+            ・記事の最大文字数は6000文字
             `,
           },
         ],
