@@ -167,7 +167,6 @@ const App = () => {
           className="bg-white"
           sx={{ mb: 10 }}
         />
-
         <form className="flex flex-col justify-center my-5" onSubmit={handleArticlePrompt}>
           <p className="mb-1">記事のタイトル・リード文・見出しをもとに記事を生成</p>
           <TextField
