@@ -10,7 +10,7 @@ export const sendTitlePrompt = async (mainKeyword, subKeyword, longTailKeyword) 
       const draftTitle = await axios.post(
         process.env.REACT_APP_OPENAI_API_REQUEST_URL,
         {
-          model: "gpt-3.5-turbo",
+          model: "gpt-4",
           messages: [
             {
               role: "user",
@@ -37,7 +37,7 @@ export const sendTitlePrompt = async (mainKeyword, subKeyword, longTailKeyword) 
       const draftTitle = await axios.post(
         process.env.REACT_APP_OPENAI_API_REQUEST_URL,
         {
-          model: "gpt-3.5-turbo",
+          model: "gpt-4",
           messages: [
             {
               role: "user",
@@ -78,7 +78,7 @@ export const sendLeadPrompt = async(title) => {
     const draftHead = await axios.post(
       process.env.REACT_APP_OPENAI_API_REQUEST_URL,
       {
-        model: "gpt-3.5-turbo",
+        model: "gpt-4",
         messages: [
           {
             role: "user",
@@ -114,7 +114,7 @@ export const sendHeadPrompt = async (title, lead) => {
     const draftHead = await axios.post(
       process.env.REACT_APP_OPENAI_API_REQUEST_URL,
       {
-        model: "gpt-3.5-turbo",
+        model: "gpt-4",
         messages: [
           {
             role: "user",
@@ -152,7 +152,7 @@ export const sendArticlePrompt = async (title, lead, head) => {
     const draftArticle = await axios.post(
       process.env.REACT_APP_OPENAI_API_REQUEST_URL,
       {
-        model: "gpt-3.5-turbo",
+        model: "gpt-4",
         messages: [
           {
             role: "user",
