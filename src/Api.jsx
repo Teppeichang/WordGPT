@@ -162,9 +162,7 @@ export const sendArticlePrompt = async (title, lead, head) => {
             ・マークダウン形式で文章を出力すること/n
             ・記事のタイトルは${title}にすること/n
             ・記事の導入文は${lead}にすること/n
-            ・記事の見出しは${head}にすること/n
-            ・記事の最低文字数は4000文字/n
-            ・記事の最大文字数は6000文字
+            ・記事の見出しは${head}にすること
             `,
           },
         ],
