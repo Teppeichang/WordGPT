@@ -1,13 +1,7 @@
 import CopyButton from "./components/CopyButton";
 import { useState } from "react";
 import { TextField, Button } from "@mui/material";
-import {
-  sendTitlePrompt,
-  sendLeadPrompt,
-  sendHeadPrompt,
-  sendArticlePrompt,
-  createArticle,
-} from "./Api";
+import { sendTitlePrompt, sendLeadPrompt, sendHeadPrompt, sendArticlePrompt, createArticle } from "./Api";
 
 const App = () => {
   const [mainKeyword, setMainKeyword] = useState("");
@@ -119,7 +113,7 @@ const App = () => {
             className="text-white py-2 mb-5 rounded-lg max-w-xs"
             sx={{ backgroundColor: "#60A5FA", fontWeight: "bold" }}
           >
-            見出し作成
+            リード文作成
           </Button>
         </form>
         <TextField
@@ -240,7 +234,7 @@ const App = () => {
             >
               投稿
             </Button>
-            <CopyButton draftArticle={draftArticle} />
+            <CopyButton title={title} lead={lead} draftArticle={draftArticle} />
           </div>
         </form>
       </div>
