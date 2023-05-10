@@ -14,12 +14,7 @@ export const sendTitlePrompt = async (mainKeyword, subKeyword, longTailKeyword) 
           messages: [
             {
               role: "user",
-              content: `あなたはプロのライターです。以下の制約条件をもとに、SEOに強いブログ記事タイトルを箇条書き形式で出力してください。/n
-              #制約条件/n
-              32文字以内であること。/n
-              以下のキーワードを必ず使用すること。/n
-              ・${mainKeyword}/n
-              ・${subKeyword}`,
+              content: `あなたはプロのライターです。以下の制約条件をもとに、SEOに強いブログ記事タイトルを箇条書き形式で出力してください。\n#制約条件\n32文字以内であること。\n以下のキーワードを必ず使用すること。\n・${mainKeyword}\n・${subKeyword}`,
             },
           ],
         },
@@ -41,13 +36,7 @@ export const sendTitlePrompt = async (mainKeyword, subKeyword, longTailKeyword) 
           messages: [
             {
               role: "user",
-              content: `あなたはプロのライターです。以下の制約条件をもとに、SEOに強いブログ記事タイトルを箇条書き形式で出力してください。/n
-              #制約条件/n
-              32文字以内であること。/n
-              以下のキーワードを必ず使用すること。/n
-              ・${mainKeyword}/n
-              ・${subKeyword}/n
-              ・${longTailKeyword}`,
+              content: `あなたはプロのライターです。以下の制約条件をもとに、SEOに強いブログ記事タイトルを箇条書き形式で出力してください。\n#制約条件\n32文字以内であること。\n以下のキーワードを必ず使用すること。\n・${mainKeyword}\n・${subKeyword}\n・${longTailKeyword}`,
             },
           ],
         },
@@ -82,9 +71,7 @@ export const sendLeadPrompt = async(title) => {
         messages: [
           {
             role: "user",
-            content: `あなたはプロのライターです。以下のタイトルでブログ記事を作成するので、SEOに強く、タイトルとの親和性が高い導入文を出力してください。/n
-            # 記事タイトル/n
-            ・${title}`,
+            content: `あなたはプロのライターです。以下のタイトルでブログ記事を作成するので、SEOに強く、タイトルとの親和性が高い導入文を出力してください。\n# 記事タイトル\n・${title}`,
           },
         ],
       },
@@ -118,11 +105,7 @@ export const sendHeadPrompt = async (title, lead) => {
         messages: [
           {
             role: "user",
-            content: `あなたはプロのライターです。以下のタイトルと導入文を使用したブログ記事を作成するので、SEOに強く、タイトルとの親和性が高い見出しを、箇条書き形式で出力してください。/n
-            # 記事タイトル/n
-            ・${title}/n
-            # 導入文/n
-            ・${lead}/n`,
+            content: `あなたはプロのライターです。以下のタイトルと導入文を使用したブログ記事を作成するので、SEOに強く、タイトルとの親和性が高い見出しを、箇条書き形式で出力してください。\n# 記事タイトル\n・${title}\n# 導入文\n・${lead}`,
           },
         ],
       },
@@ -156,13 +139,7 @@ export const sendArticlePrompt = async (title, head) => {
         messages: [
           {
             role: "user",
-            content: `あなたはプロのライターです。以下の制約条件に従い、SEOに強い記事を作成してください。/n
-            # 制約条件/n
-            ・記事はタイトル・見出し・本文の構成にすること/n
-            ・マークダウン形式で文章を出力すること/n
-            ・記事のタイトルは${title}にすること/n
-            ・記事の見出しは${head}にすること
-            `,
+            content: `あなたはプロのライターです。以下の制約条件に従い、SEOに強い記事を作成してください。\n# 制約条件\n・記事はタイトル・見出し・本文の構成にすること\n・マークダウン形式で文章を出力すること\n・記事のタイトルは${title}にすること\n・記事の見出しは${head}にすること`,
           },
         ],
       },
