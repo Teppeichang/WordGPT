@@ -1,13 +1,7 @@
 import CopyButton from "./components/CopyButton";
 import { useState } from "react";
 import { TextField, Button } from "@mui/material";
-import {
-  sendTitlePrompt,
-  sendLeadPrompt,
-  sendHeadPrompt,
-  sendArticlePrompt,
-  createArticle,
-} from "./Api";
+import { sendTitlePrompt, sendLeadPrompt, sendHeadPrompt, sendArticlePrompt, createArticle } from "./Api";
 
 const App = () => {
   const [mainKeyword, setMainKeyword] = useState("");
@@ -39,13 +33,13 @@ const App = () => {
 
   const handleArticlePrompt = async (event) => {
     event.preventDefault();
-    const draftArticle = await sendArticlePrompt(title, lead, head);
+    const draftArticle = await sendArticlePrompt(title, head);
     setDraftArticle(draftArticle);
   };
 
   const handleCreateArticle = async (event) => {
     event.preventDefault();
-    await createArticle(title, draftArticle);
+    await createArticle(title, lead, draftArticle);
   };
 
   return (
@@ -119,7 +113,7 @@ const App = () => {
             className="text-white py-2 mb-5 rounded-lg max-w-xs"
             sx={{ backgroundColor: "#60A5FA", fontWeight: "bold" }}
           >
-            見出し作成
+            リード文作成
           </Button>
         </form>
         <TextField
@@ -168,7 +162,43 @@ const App = () => {
           sx={{ mb: 10 }}
         />
         <form className="flex flex-col justify-center my-5" onSubmit={handleArticlePrompt}>
-          <p className="mb-1">記事のタイトル・リード文・見出しをもとに記事を生成</p>
+          <p className="mb-1">記事のタイトル・見出しをもとに記事を生成</p>
+          <TextField
+            label="タイトル"
+            variant="outlined"
+            className="bg-white"
+            value={title}
+            onChange={(event) => setTitle(event.target.value)}
+          />
+          <TextField
+            label="見出し"
+            multiline
+            rows={10}
+            value={head}
+            className="bg-white"
+            sx={{ my: 2 }}
+            onChange={(event) => setHead(event.target.value)}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            disableElevation={true}
+            className="text-white py-2 mb-5 rounded-lg max-w-xs"
+            sx={{ backgroundColor: "#60A5FA", fontWeight: "bold"}}
+          >
+            記事作成
+          </Button>
+        </form>
+        <TextField
+          label="記事"
+          multiline
+          rows={10}
+          value={draftArticle}
+          className="bg-white"
+          sx={{ mb: 10 }}
+        />
+        <form className="flex flex-col justify-center my-5" onSubmit={handleCreateArticle}>
+          <p className="mb-1">記事プレビュー</p>
           <TextField
             label="タイトル"
             variant="outlined"
@@ -186,32 +216,13 @@ const App = () => {
             onChange={(event) => setLead(event.target.value)}
           />
           <TextField
-            label="見出し"
-            multiline
-            rows={10}
-            value={head}
-            className="bg-white"
-            sx={{ mb: 2 }}
-            onChange={(event) => setHead(event.target.value)}
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            disableElevation={true}
-            className="text-white py-2 mb-5 rounded-lg max-w-xs"
-            sx={{ backgroundColor: "#60A5FA", fontWeight: "bold" }}
-          >
-            記事作成
-          </Button>
-        </form>
-        <form className="flex flex-col justify-center" onSubmit={handleCreateArticle}>
-          <TextField
             label="記事"
             multiline
             rows={10}
             value={draftArticle}
             className="bg-white"
             sx={{ mb: 2 }}
+            onChange={(event) => setDraftArticle(event.target.value)}
           />
           <div className="flex">
             <Button
@@ -223,7 +234,7 @@ const App = () => {
             >
               投稿
             </Button>
-            <CopyButton draftArticle={draftArticle} />
+            <CopyButton title={title} lead={lead} draftArticle={draftArticle} />
           </div>
         </form>
       </div>
