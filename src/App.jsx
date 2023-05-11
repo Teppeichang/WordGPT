@@ -33,7 +33,7 @@ const App = () => {
 
   const handleArticlePrompt = async (event) => {
     event.preventDefault();
-    const draftArticle = await sendArticlePrompt(title, head);
+    const draftArticle = await sendArticlePrompt(title, lead, head);
     setDraftArticle(draftArticle);
   };
 
@@ -162,43 +162,7 @@ const App = () => {
           sx={{ mb: 10 }}
         />
         <form className="flex flex-col justify-center my-5" onSubmit={handleArticlePrompt}>
-          <p className="mb-1">記事のタイトル・見出しをもとに記事を生成</p>
-          <TextField
-            label="タイトル"
-            variant="outlined"
-            className="bg-white"
-            value={title}
-            onChange={(event) => setTitle(event.target.value)}
-          />
-          <TextField
-            label="見出し"
-            multiline
-            rows={10}
-            value={head}
-            className="bg-white"
-            sx={{ my: 2 }}
-            onChange={(event) => setHead(event.target.value)}
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            disableElevation={true}
-            className="text-white py-2 mb-5 rounded-lg max-w-xs"
-            sx={{ backgroundColor: "#60A5FA", fontWeight: "bold"}}
-          >
-            記事作成
-          </Button>
-        </form>
-        <TextField
-          label="記事"
-          multiline
-          rows={10}
-          value={draftArticle}
-          className="bg-white"
-          sx={{ mb: 10 }}
-        />
-        <form className="flex flex-col justify-center my-5" onSubmit={handleCreateArticle}>
-          <p className="mb-1">記事プレビュー</p>
+          <p className="mb-1">記事のタイトル・リード文・見出しをもとに記事を生成</p>
           <TextField
             label="タイトル"
             variant="outlined"
@@ -216,9 +180,30 @@ const App = () => {
             onChange={(event) => setLead(event.target.value)}
           />
           <TextField
-            label="記事"
+            label="見出し"
             multiline
             rows={10}
+            value={head}
+            className="bg-white"
+            sx={{ mb: 2 }}
+            onChange={(event) => setHead(event.target.value)}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            disableElevation={true}
+            className="text-white py-2 mb-5 rounded-lg max-w-xs"
+            sx={{ backgroundColor: "#60A5FA", fontWeight: "bold"}}
+          >
+            記事作成
+          </Button>
+        </form>
+        <form className="flex flex-col justify-center my-5" onSubmit={handleCreateArticle}>
+          <p className="mb-1">記事プレビュー</p>
+          <TextField
+            label="記事"
+            multiline
+            rows={20}
             value={draftArticle}
             className="bg-white"
             sx={{ mb: 2 }}
@@ -234,7 +219,7 @@ const App = () => {
             >
               投稿
             </Button>
-            <CopyButton title={title} lead={lead} draftArticle={draftArticle} />
+            <CopyButton draftArticle={draftArticle} />
           </div>
         </form>
       </div>

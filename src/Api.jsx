@@ -105,7 +105,7 @@ export const sendHeadPrompt = async (title, lead) => {
         messages: [
           {
             role: "user",
-            content: `あなたはプロのライターです。以下のタイトルと導入文を使用したブログ記事を作成するので、SEOに強く、タイトルとの親和性が高い見出しを、箇条書き形式で出力してください。\n# 記事タイトル\n・${title}\n# 導入文\n・${lead}`,
+            content: `あなたはプロのライターです。以下のタイトルと導入文を使用したブログ記事を作成するので、タイトルとの親和性が高い見出しと、それぞれの見出しの下にに500文字程度の文章を加えた、SEOに強い文章を作成してください。\n# 記事タイトル\n・${title}\n# 導入文\n・${lead}`,
           },
         ],
       },
@@ -128,7 +128,7 @@ export const sendHeadPrompt = async (title, lead) => {
   }
 };
 
-export const sendArticlePrompt = async (title, head) => {
+export const sendArticlePrompt = async (title, lead, head) => {
   nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
   try {
     nprogress.start();
@@ -139,7 +139,7 @@ export const sendArticlePrompt = async (title, head) => {
         messages: [
           {
             role: "user",
-            content: `あなたはプロのライターです。以下の制約条件に従い、SEOに強い記事を作成してください。\n# 制約条件\n・記事はタイトル・見出し・本文の構成にすること\n・マークダウン形式で文章を出力すること\n・記事のタイトルは${title}にすること\n・記事の見出しは${head}にすること`,
+            content: `あなたはプロのライターです。以下の記事タイトル・導入文・見出しの構成で、マークダウン形式でブログ記事を作成してください。\n#記事のタイトル${title}\n#導入文\n${lead}#見出し${head}`,
           },
         ],
       },

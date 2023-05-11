@@ -1,11 +1,11 @@
 import Swal from "sweetalert2";
 import { Button } from "@mui/material";
 
-const CopyButton = ({ title, lead, draftArticle }) => {
+const CopyButton = ({ draftArticle }) => {
   const copyToClipboard = async (event) => {
     event.preventDefault();
     try {
-      await navigator.clipboard.writeText(`${title}\n${lead}\n${draftArticle}`);
+      await navigator.clipboard.writeText(draftArticle);
       Swal.fire({
         icon: "success",
         title: "コピーしました",
