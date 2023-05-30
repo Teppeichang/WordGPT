@@ -2,6 +2,8 @@ import axios from "axios";
 import nprogress from "nprogress";
 import Swal from "sweetalert2";
 
+const delay = (delayTime) => new Promise(resolve => setTimeout(resolve, delayTime));
+
 export const sendTitlePrompt = async (mainKeyword, subKeyword, longTailKeyword) => {
   nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
   try {
@@ -14,7 +16,7 @@ export const sendTitlePrompt = async (mainKeyword, subKeyword, longTailKeyword) 
           messages: [
             {
               role: "user",
-              content: `あなたはプロのライターです。以下の制約条件をもとに、SEOに強いブログ記事タイトルを箇条書き形式で出力してください。\n#制約条件\n32文字以内であること。\n以下のキーワードを必ず使用すること。\n・${mainKeyword}\n・${subKeyword}`,
+              content: `あなたはプロのライターです。以下の#制約条件 に従い、SEOに強いブログ記事タイトルを箇条書き形式で出力してください。\n#制約条件\n32文字以内であること。\n以下のキーワードを必ず使用すること。\n・${mainKeyword}\n・${subKeyword}`,
             },
           ],
         },
@@ -36,7 +38,7 @@ export const sendTitlePrompt = async (mainKeyword, subKeyword, longTailKeyword) 
           messages: [
             {
               role: "user",
-              content: `あなたはプロのライターです。以下の制約条件をもとに、SEOに強いブログ記事タイトルを箇条書き形式で出力してください。\n#制約条件\n32文字以内であること。\n以下のキーワードを必ず使用すること。\n・${mainKeyword}\n・${subKeyword}\n・${longTailKeyword}`,
+              content: `あなたはプロのライターです。以下の#制約条件 に従い、SEOに強い記事のタイトルを箇条書き形式で出力してください。\n#制約条件\n32文字以内であること。\n以下のキーワードを必ず使用すること。\n・${mainKeyword}\n・${subKeyword}\n・${longTailKeyword}`,
             },
           ],
         },
@@ -60,7 +62,7 @@ export const sendTitlePrompt = async (mainKeyword, subKeyword, longTailKeyword) 
   }
 };
 
-export const sendLeadPrompt = async(title) => {
+export const sendLeadPrompt = async (title) => {
   nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
   try {
     nprogress.start();
@@ -71,7 +73,7 @@ export const sendLeadPrompt = async(title) => {
         messages: [
           {
             role: "user",
-            content: `あなたはプロのライターです。以下のタイトルでブログ記事を作成するので、SEOに強く、タイトルとの親和性が高い導入文を出力してください。\n# 記事タイトル\n・${title}`,
+            content: `あなたはプロのライターです。以下の#タイトル で記事を作成するので、SEOに強い導入文を出力してください。\n# 記事タイトル\n・${title}`,
           },
         ],
       },
@@ -92,7 +94,7 @@ export const sendLeadPrompt = async(title) => {
       title: "エラーが発生しました。",
     });
   }
-}
+};
 
 export const sendHeadPrompt = async (title, lead) => {
   nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
@@ -105,7 +107,7 @@ export const sendHeadPrompt = async (title, lead) => {
         messages: [
           {
             role: "user",
-            content: `あなたはプロのライターです。以下のタイトルと導入文を使用したブログ記事を作成するので、タイトルとの親和性が高い見出しと、それぞれの見出しの下にに500文字程度の文章を加えた、SEOに強い文章を作成してください。\n# 記事タイトル\n・${title}\n# 導入文\n・${lead}`,
+            content: `あなたはプロのライターです。以下の#タイトル と#リード文 を使用した記事に合う見出しを作成してください。\n# 記事タイトル\n・${title}\n# 導入文\n・${lead}`,
           },
         ],
       },
@@ -128,41 +130,48 @@ export const sendHeadPrompt = async (title, lead) => {
   }
 };
 
-export const sendArticlePrompt = async (title, lead, head) => {
+export const sendArticlePrompt = async (headList) => {
   nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
-  try {
-    nprogress.start();
-    const draftArticle = await axios.post(
-      process.env.REACT_APP_OPENAI_API_REQUEST_URL,
-      {
-        model: "gpt-4",
-        messages: [
-          {
-            role: "user",
-            content: `あなたはプロのライターです。以下の記事タイトル・導入文・見出しの構成で、マークダウン形式でブログ記事を作成してください。\n#記事のタイトル${title}\n#導入文\n${lead}#見出し${head}`,
-          },
-        ],
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+  let draftArticleList = [];
+  for (let i = 0; i < headList.length; i++) {
+    console.log(`処理中...${i + 1}/${headList.length}`)
+    try {
+      nprogress.start();
+      const draftArticle = await axios.post(
+        process.env.REACT_APP_OPENAI_API_REQUEST_URL,
+        {
+          model: "gpt-4",
+          messages: [
+            {
+              role: "user",
+              content: `あなたはプロのライターです。以下の#キーワード についてSEOに強い記事を作成していただきます。記事作成の流れは以下の#記事作成の流れ に従っていただき、マークダウン形式で記事を出力してください。\n#キーワード\n${headList[i]}\n#記事作成の流れ\n1. #キーワード をタイトル(h2)とする。\n2. 1.で作成した導入文に中見出し(h3)と子見出し(h4)を作成する\n3. 2.で作成した各見出しに対して、1.と2.の文脈を踏まえた具体例付きの文章を作成する\n4. 3.で作成した文章に、可能であればURLや引用元を追記する`,
+            },
+          ],
         },
-      }
-    );
-    nprogress.done();
-    return draftArticle.data.choices[0].message.content;
-  } catch (error) {
-    nprogress.done();
-    console.log(error);
-    Swal.fire({
-      icon: "error",
-      title: "エラーが発生しました。",
-    });
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+          },
+        }
+      );
+      draftArticleList.push(draftArticle.data.choices[0].message.content);
+      await delay(1000);
+    } catch (error) {
+      nprogress.done();
+      console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "エラーが発生しました。",
+      });
+      await delay(1000);
+    }
   }
+  nprogress.done();
+  return draftArticleList;
 };
 
-export const createArticle = async (title, lead, draftArticle) => {
+export const postArticle = async (title, lead, draftArticle) => {
   nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
   try {
     nprogress.start();
