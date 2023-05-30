@@ -1,7 +1,7 @@
 import CopyButton from "./components/CopyButton";
 import { useState } from "react";
 import { TextField, Button } from "@mui/material";
-import { sendTitlePrompt, sendLeadPrompt, sendHeadPrompt, sendArticlePrompt, createArticle } from "./Api";
+import { sendTitlePrompt, sendLeadPrompt, sendHeadPrompt, sendArticlePrompt, postArticle, } from "./Api";
 
 const App = () => {
   const [mainKeyword, setMainKeyword] = useState("");
@@ -33,13 +33,15 @@ const App = () => {
 
   const handleArticlePrompt = async (event) => {
     event.preventDefault();
-    const draftArticle = await sendArticlePrompt(title, lead, head);
-    setDraftArticle(draftArticle);
+    const draftArticle = await sendArticlePrompt(headList);
+    setDraftArticle(draftArticle.join("\n"));
   };
 
-  const handleCreateArticle = async (event) => {
+  const headList = head.split("\n");
+
+  const handlePostArticle = async (event) => {
     event.preventDefault();
-    await createArticle(title, lead, draftArticle);
+    await postArticle(title, lead, draftArticle);
   };
 
   return (
@@ -117,7 +119,7 @@ const App = () => {
           </Button>
         </form>
         <TextField
-          label="記事リード文"
+          label="リード文"
           multiline
           rows={10}
           value={lead}
@@ -135,7 +137,7 @@ const App = () => {
             onChange={(event) => setTitle(event.target.value)}
           />
           <TextField
-            label="記事リード文"
+            label="リード文"
             multiline
             rows={10}
             value={lead}
@@ -162,23 +164,7 @@ const App = () => {
           sx={{ mb: 10 }}
         />
         <form className="flex flex-col justify-center my-5" onSubmit={handleArticlePrompt}>
-          <p className="mb-1">記事のタイトル・リード文・見出しをもとに記事を生成</p>
-          <TextField
-            label="タイトル"
-            variant="outlined"
-            className="bg-white"
-            value={title}
-            onChange={(event) => setTitle(event.target.value)}
-          />
-          <TextField
-            label="記事リード文"
-            multiline
-            rows={10}
-            value={lead}
-            className="bg-white"
-            sx={{ my: 2 }}
-            onChange={(event) => setLead(event.target.value)}
-          />
+          <p className="mb-1">見出しをもとに記事本文を生成</p>
           <TextField
             label="見出し"
             multiline
@@ -188,20 +174,45 @@ const App = () => {
             sx={{ mb: 2 }}
             onChange={(event) => setHead(event.target.value)}
           />
+          <TextField
+            label="記事本文"
+            multiline
+            rows={20}
+            value={draftArticle}
+            className="bg-white"
+            sx={{ mb: 2 }}
+            onChange={(event) => setDraftArticle(event.target.value)}
+          />
           <Button
             type="submit"
             variant="contained"
             disableElevation={true}
             className="text-white py-2 mb-5 rounded-lg max-w-xs"
-            sx={{ backgroundColor: "#60A5FA", fontWeight: "bold"}}
+            sx={{ backgroundColor: "#60A5FA", fontWeight: "bold" }}
           >
             記事作成
           </Button>
         </form>
-        <form className="flex flex-col justify-center my-5" onSubmit={handleCreateArticle}>
-          <p className="mb-1">記事プレビュー</p>
+        <form className="flex flex-col justify-center my-5" onSubmit={handlePostArticle}>
+          <p className="mb-1">プレビュー</p>
           <TextField
-            label="記事"
+            label="タイトル"
+            variant="outlined"
+            className="bg-white"
+            value={title}
+            onChange={(event) => setTitle(event.target.value)}
+          />
+          <TextField
+            label="リード文"
+            multiline
+            rows={10}
+            value={lead}
+            className="bg-white"
+            sx={{ my: 2 }}
+            onChange={(event) => setLead(event.target.value)}
+          />
+          <TextField
+            label="記事本文"
             multiline
             rows={20}
             value={draftArticle}
