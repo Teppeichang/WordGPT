@@ -179,7 +179,7 @@ export const postArticle = async (title, lead, draftArticle) => {
       process.env.REACT_APP_WP_REST_API_REQUEST_URL,
       {
         title: title,
-        content: `${lead}/n${draftArticle}`,
+        content: `${lead}\n${draftArticle}`,
         status: "draft",
       },
       {
