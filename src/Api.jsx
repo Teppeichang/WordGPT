@@ -155,7 +155,7 @@ export const sendArticlePrompt = async (headList) => {
       draftArticleList.push(draftArticle.data.choices[0].message.content);
       Swal.fire({
         icon: "success",
-        title: `${i + 1}個目の見出しの処理が完了しました。次の見出しの処理に移行します。`,
+        title: `${i + 1}個目の見出しの処理が完了しました。`,
         text: `処理状況: ${i + 1}/${headList.length}`,
         showConfirmButton: false,
         timer: 1500
@@ -164,7 +164,7 @@ export const sendArticlePrompt = async (headList) => {
     } catch (error) {
       Swal.fire({
         icon: "error",
-        title: "エラーが発生しました。次の見出しの処理に移行します。",
+        title: "エラーが発生しました。次の処理に移行します。",
         text: `処理状況: ${i + 1}/${headList.length}`,
         showConfirmButton: false,
         timer: 1500
