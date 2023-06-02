@@ -54,7 +54,6 @@ export const sendTitlePrompt = async (mainKeyword, subKeyword, longTailKeyword) 
     }
   } catch (error) {
     nprogress.done();
-    console.log(error);
     Swal.fire({
       icon: "error",
       title: "エラーが発生しました。",
@@ -88,7 +87,6 @@ export const sendLeadPrompt = async (title) => {
     return draftHead.data.choices[0].message.content;
   } catch (error) {
     nprogress.done();
-    console.log(error);
     Swal.fire({
       icon: "error",
       title: "エラーが発生しました。",
@@ -122,7 +120,6 @@ export const sendHeadPrompt = async (title, lead) => {
     return draftHead.data.choices[0].message.content;
   } catch (error) {
     nprogress.done();
-    console.log(error);
     Swal.fire({
       icon: "error",
       title: "エラーが発生しました。",
@@ -156,13 +153,21 @@ export const sendArticlePrompt = async (headList) => {
         }
       );
       draftArticleList.push(draftArticle.data.choices[0].message.content);
+      Swal.fire({
+        icon: "success",
+        title: `${i + 1}個目の見出しの処理が完了しました。次の見出しの処理に移行します。`,
+        text: `処理状況: ${i + 1}/${headList.length}`,
+        showConfirmButton: false,
+        timer: 1500
+      });
       await delay(1000);
     } catch (error) {
-      nprogress.done();
-      console.log(error);
       Swal.fire({
         icon: "error",
-        title: "エラーが発生しました。",
+        title: "エラーが発生しました。次の見出しの処理に移行します。",
+        text: `処理状況: ${i + 1}/${headList.length}`,
+        showConfirmButton: false,
+        timer: 1500
       });
       await delay(1000);
     }
