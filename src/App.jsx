@@ -230,7 +230,7 @@ const App = () => {
             >
               投稿
             </Button>
-            <CopyButton draftArticle={draftArticle} />
+            <CopyButton title={title} lead={lead} draftArticle={draftArticle} />
           </div>
         </form>
       </div>
