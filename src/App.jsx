@@ -49,7 +49,7 @@ const App = () => {
       <div className="flex justify-center items-center">
         <p className="my-10 text-center text-3xl font-bold">WordGPT</p>
         <p className="bg-green-400 text-green-800 font-semibold tracking-wider p-1 ml-1 rounded-lg">
-          BETA
+          BETA ver 2.0
         </p>
       </div>
       <div className="flex flex-col bg-slate-100 rounded-lg p-10 mb-10">
