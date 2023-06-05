@@ -72,7 +72,7 @@ export const sendLeadPrompt = async (title) => {
         messages: [
           {
             role: "user",
-            content: `あなたはプロのライターです。以下の#タイトル で記事を作成するので、SEOに強い導入文を出力してください。\n# 記事タイトル\n・${title}`,
+            content: `あなたはプロのライターです。以下の#タイトル で記事を作成するので、SEOに強い導入文を出力してください。\n# タイトル\n・${title}`,
           },
         ],
       },
@@ -105,7 +105,7 @@ export const sendHeadPrompt = async (title, lead) => {
         messages: [
           {
             role: "user",
-            content: `あなたはプロのライターです。以下の#タイトル と#リード文 を使用した記事に合う見出しを作成してください。\n# 記事タイトル\n・${title}\n# 導入文\n・${lead}`,
+            content: `あなたはプロのライターです。以下の#タイトル と#導入文 で構成される記事に合う見出しを作成してください。\n# タイトル\n・${title}\n# 導入文\n・${lead}`,
           },
         ],
       },
