@@ -16,7 +16,7 @@ export const sendTitlePrompt = async (mainKeyword, subKeyword, longTailKeyword) 
           messages: [
             {
               role: "user",
-              content: `あなたはプロのライターです。以下の#制約条件 に従い、SEOに強いブログ記事タイトルを箇条書き形式で出力してください。\n#制約条件\n32文字以内であること。\n以下のキーワードを必ず使用すること。\n・${mainKeyword}\n・${subKeyword}`,
+              content: `あなたはSEO・コンテンツマーケティングのスペシャリストです。これからブログ記事を作成します。以下の#制約条件 に従い、SEOに強いタイトルを10個出力してください。\n#制約条件\n32文字以内であること。\n以下のキーワードを必ず使用すること。\n・${mainKeyword}\n・${subKeyword}`,
             },
           ],
         },
@@ -38,7 +38,7 @@ export const sendTitlePrompt = async (mainKeyword, subKeyword, longTailKeyword) 
           messages: [
             {
               role: "user",
-              content: `あなたはプロのライターです。以下の#制約条件 に従い、SEOに強い記事のタイトルを箇条書き形式で出力してください。\n#制約条件\n32文字以内であること。\n以下のキーワードを必ず使用すること。\n・${mainKeyword}\n・${subKeyword}\n・${longTailKeyword}`,
+              content: `あなたはSEO・コンテンツマーケティングのスペシャリストです。これからブログ記事を作成します。以下の#制約条件 に従い、SEOに強いタイトルを10個出力してください。\n#制約条件\n32文字以内であること。\n以下のキーワードを必ず使用すること。\n・${mainKeyword}\n・${subKeyword}\n・${longTailKeyword}`,
             },
           ],
         },
@@ -72,7 +72,7 @@ export const sendLeadPrompt = async (title) => {
         messages: [
           {
             role: "user",
-            content: `あなたはプロのライターです。以下の#タイトル で記事を作成するので、SEOに強い導入文を出力してください。\n# タイトル\n・${title}`,
+            content: `あなたはSEO・コンテンツマーケティングのスペシャリストです。以下の#タイトル でブログ記事を作成するので、SEOに強い導入文を出力してください。\n# タイトル\n・${title}`,
           },
         ],
       },
@@ -105,7 +105,7 @@ export const sendHeadPrompt = async (title, lead) => {
         messages: [
           {
             role: "user",
-            content: `あなたはプロのライターです。以下の#タイトル と#導入文 で構成される記事に合う見出しを作成してください。\n# タイトル\n・${title}\n# 導入文\n・${lead}`,
+            content: `あなたはSEO・コンテンツマーケティングのスペシャリストです。以下の#タイトル と#導入文 から始まるブログ記事を作成します。#タイトル と#導入文 の文脈に合う見出しを作成してください。\n# タイトル\n・${title}\n# 導入文\n・${lead}`,
           },
         ],
       },
@@ -141,7 +141,7 @@ export const sendArticlePrompt = async (headList) => {
           messages: [
             {
               role: "user",
-              content: `あなたはプロのライターです。以下の#キーワード についてSEOに強い記事を作成していただきます。記事作成の流れは以下の#記事作成の流れ に従っていただき、マークダウン形式で記事を出力してください。\n#キーワード\n${headList[i]}\n#記事作成の流れ\n1. #キーワード をタイトル(h2)とする。\n2. 1.で作成した導入文に中見出し(h3)と子見出し(h4)を作成する\n3. 2.で作成した各見出しに対して、1.と2.の文脈を踏まえた具体例付きの文章を作成する\n4. 3.で作成した文章に、可能であればURLや引用元を追記する`,
+              content: `あなたはSEO・コンテンツマーケティングのスペシャリストです。以下の#キーワード についてSEOに強い記事を作成していただきます。記事作成の流れは以下の#記事作成の流れ に従っていただき、マークダウン形式で記事を出力してください。\n#キーワード\n${headList[i]}\n#記事作成の流れ\n1. #キーワード をタイトル(h2)とする。\n2. 1.で作成した導入文に中見出し(h3)と子見出し(h4)を作成する\n3. 2.で作成した各見出しに対して、1.と2.の文脈を踏まえた具体例付きの文章を作成する\n4. 3.で作成した文章に、可能であればURLや引用元を追記する`,
             },
           ],
         },
