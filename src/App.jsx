@@ -174,15 +174,6 @@ const App = () => {
             sx={{ mb: 2 }}
             onChange={(event) => setHead(event.target.value)}
           />
-          <TextField
-            label="記事本文"
-            multiline
-            rows={20}
-            value={draftArticle}
-            className="bg-white"
-            sx={{ mb: 2 }}
-            onChange={(event) => setDraftArticle(event.target.value)}
-          />
           <Button
             type="submit"
             variant="contained"
@@ -192,6 +183,15 @@ const App = () => {
           >
             記事作成
           </Button>
+          <TextField
+            label="記事本文"
+            multiline
+            rows={20}
+            value={draftArticle}
+            className="bg-white"
+            sx={{ mt: 2 }}
+            onChange={(event) => setDraftArticle(event.target.value)}
+          />
         </form>
         <form className="flex flex-col justify-center my-5" onSubmit={handlePostArticle}>
           <p className="mb-1">プレビュー</p>
