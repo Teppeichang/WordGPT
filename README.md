@@ -1,5 +1,5 @@
 # WordGPT
-![](https://img.shields.io/badge/version-2.0-brightgreen)
+![](https://img.shields.io/badge/version-2.0-brightgreen)  
 
 ChatGPT API + WordPress REST APIによる記事生成・投稿ツール
 
