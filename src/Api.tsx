@@ -2,9 +2,9 @@ import axios from "axios";
 import nprogress from "nprogress";
 import Swal from "sweetalert2";
 
-const delay = (delayTime) => new Promise(resolve => setTimeout(resolve, delayTime));
+const delay = (delayTime: number) => new Promise(resolve => setTimeout(resolve, delayTime));
 
-export const sendTitlePrompt = async (mainKeyword, subKeyword, longTailKeyword) => {
+export const sendTitlePrompt = async (mainKeyword: string, subKeyword: string, longTailKeyword: string) => {
   nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
   try {
     nprogress.start();
@@ -61,7 +61,7 @@ export const sendTitlePrompt = async (mainKeyword, subKeyword, longTailKeyword) 
   }
 };
 
-export const sendLeadPrompt = async (title) => {
+export const sendLeadPrompt = async (title: string) => {
   nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
   try {
     nprogress.start();
@@ -94,7 +94,7 @@ export const sendLeadPrompt = async (title) => {
   }
 };
 
-export const sendHeadPrompt = async (title, lead) => {
+export const sendHeadPrompt = async (title: string, lead: string) => {
   nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
   try {
     nprogress.start();
@@ -127,7 +127,7 @@ export const sendHeadPrompt = async (title, lead) => {
   }
 };
 
-export const sendArticlePrompt = async (headList) => {
+export const sendArticlePrompt = async (headList: string[]) => {
   nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
   let draftArticleList = [];
   for (let i = 0; i < headList.length; i++) {
@@ -176,7 +176,7 @@ export const sendArticlePrompt = async (headList) => {
   return draftArticleList;
 };
 
-export const postArticle = async (title, lead, draftArticle) => {
+export const postArticle = async (title: string, lead: string, draftArticle: string) => {
   nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
   try {
     nprogress.start();
