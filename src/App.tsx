@@ -4,34 +4,34 @@ import { TextField, Button } from "@mui/material";
 import { sendTitlePrompt, sendLeadPrompt, sendHeadPrompt, sendArticlePrompt, postArticle, } from "./Api";
 
 const App = () => {
-  const [mainKeyword, setMainKeyword] = useState("");
-  const [subKeyword, setSubKeyword] = useState("");
-  const [longTailKeyword, setLongTailKeyword] = useState("");
-  const [draftTitle, setDraftTitle] = useState("");
-  const [title, setTitle] = useState("");
-  const [lead, setLead] = useState("");
-  const [head, setHead] = useState("");
-  const [draftArticle, setDraftArticle] = useState("");
+  const [mainKeyword, setMainKeyword] = useState<string>("");
+  const [subKeyword, setSubKeyword] = useState<string>("");
+  const [longTailKeyword, setLongTailKeyword] = useState<string>("");
+  const [draftTitle, setDraftTitle] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+  const [lead, setLead] = useState<string>("");
+  const [head, setHead] = useState<string>("");
+  const [draftArticle, setDraftArticle] = useState<string>("");
 
-  const handleTitlePrompt = async (event) => {
+  const handleTitlePrompt = async (event: React.FormEvent) => {
     event.preventDefault();
     const draftTitle = await sendTitlePrompt(mainKeyword, subKeyword, longTailKeyword);
     setDraftTitle(draftTitle);
   };
 
-  const handleLeadPrompt = async (event) => {
+  const handleLeadPrompt = async (event: React.FormEvent) => {
     event.preventDefault();
     const lead = await sendLeadPrompt(title);
     setLead(lead);
   };
 
-  const handleHeadPrompt = async (event) => {
+  const handleHeadPrompt = async (event: React.FormEvent) => {
     event.preventDefault();
     const head = await sendHeadPrompt(title, lead);
     setHead(head);
   };
 
-  const handleArticlePrompt = async (event) => {
+  const handleArticlePrompt = async (event: React.FormEvent) => {
     event.preventDefault();
     const draftArticle = await sendArticlePrompt(headList);
     setDraftArticle(draftArticle.join("\n"));
@@ -39,7 +39,7 @@ const App = () => {
 
   const headList = head.split("\n");
 
-  const handlePostArticle = async (event) => {
+  const handlePostArticle = async (event: React.FormEvent) => {
     event.preventDefault();
     await postArticle(title, lead, draftArticle);
   };
