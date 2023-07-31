@@ -1,8 +1,14 @@
 import Swal from "sweetalert2";
 import { Button } from "@mui/material";
 
-const CopyButton = ({ title, lead, draftArticle }) => {
-  const copyToClipboard = async (event) => {
+type Props = {
+  title: string,
+  lead: string,
+  draftArticle: string
+}
+
+const CopyButton = ({ title, lead, draftArticle }: Props) => {
+  const copyToClipboard = async (event: React.MouseEvent) => {
     event.preventDefault();
     try {
       await navigator.clipboard.writeText(`${title}\n${lead}\n${draftArticle}`);
