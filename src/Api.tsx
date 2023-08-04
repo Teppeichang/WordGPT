@@ -131,7 +131,6 @@ export const sendArticlePrompt = async (headList: string[]) => {
   nprogress.configure({ easing: "ease", speed: 500, minimum: 0.25 });
   let draftArticleList = [];
   for (let i = 0; i < headList.length; i++) {
-    console.log(`処理中...${i + 1}/${headList.length}`)
     try {
       nprogress.start();
       const draftArticle = await axios.post(
